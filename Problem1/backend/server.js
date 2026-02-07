@@ -1,21 +1,19 @@
-const express = require("express");
-const cors = require("cors");
-require("dotenv").config();
-
-const dbRoutes = require("./routes/db.routes");
+require('dotenv').config();
+const express = require('express');
+const bodyParser = require('body-parser');
+const cors = require('cors');
+const databaseController = require('./controllers/databaseController');
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 5001;
 
 app.use(cors());
-app.use(express.json());
+app.use(bodyParser.json());
 
-app.use("/api", dbRoutes);
-
-app.get("/", (req, res) => {
-  res.send("Database API running ");
-});
+app.post('/api/create-database', databaseController.createDatabase);
+app.post('/api/check-database', databaseController.checkDatabase);
+app.post('/api/migrate-database', databaseController.migrateDatabase);
 
 app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
+  console.log(`Server is running on port ${PORT}`);
 });
